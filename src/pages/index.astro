@@ -69,11 +69,11 @@ import Layout from '../layouts/Layout.astro';
                             ☕ Geen haast
                         </div>
                     </label>
-                    <label class="cursor-pointer relative md:col-span-3">
+                    <label class="cursor-pointer relative col-span-2 md:col-span-3">
                         <input type="radio" name="timing" value="Anders" class="peer sr-only" id="timingCustom">
-                        <div class="p-3 rounded-xl bg-gray-50 border-2 border-transparent peer-checked:border-kaap-pink peer-checked:bg-kaap-pink/5 hover:bg-gray-100 transition-all text-center font-medium text-kaap-gray flex items-center justify-center gap-2">
-                             ✏️ Zelf kiezen:
-                             <input type="date" name="customDate" class="bg-transparent border-b border-gray-300 focus:border-kaap-pink outline-none text-sm px-1" onclick="document.getElementById('timingCustom').checked = true">
+                        <div class="p-3 rounded-xl bg-gray-50 border-2 border-transparent peer-checked:border-kaap-pink peer-checked:bg-kaap-pink/5 hover:bg-gray-100 transition-all text-center font-medium text-kaap-gray flex flex-wrap items-center justify-center gap-2">
+                             <span>✏️ Zelf kiezen:</span>
+                             <input type="date" name="customDate" class="bg-transparent border-b border-gray-300 focus:border-kaap-pink outline-none text-sm px-1 min-w-[120px]" onclick="document.getElementById('timingCustom').checked = true">
                         </div>
                     </label>
                 </div>
