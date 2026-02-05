@@ -237,44 +237,48 @@ ${data.partners}
 
         const subject = `Content Idee: ${data.wat}`;
         const body = `
-Hoi,
+Beste Jorik & Phaedra,
 
-Hierbij een nieuw content idee!
+Hierbij een nieuw content idee vanuit de organisatie.
 
-🔹 WAT?
+========================================
+ONDERWERP
 ${data.wat}
+========================================
 
-⏰ WANNEER?
+WANNEER PLAATSEN
 ${timingVal}
 
-📍 WAAR?
+LOCATIE
 ${data.waar || '-'}
 
-🤝 PARTNERS
+BETROKKEN PARTNERS
 ${data.partners}
 
-🎯 WAAROM?
+DOEL / WAAROM
 ${data.waarom || '-'}
 
-📝 TOELICHTING
+----------------------------------------
+
+TOELICHTING
 ${data.toelichting || '-'}
 
-📸 BEELDMATERIAAL
+BEELDMATERIAAL
 ${data.media || '(Zie eventuele bijlage)'}
 
-👤 CONTACTPERSOON
+CONTACTPERSOON
 ${data.contact || '-'}
 
-⚠️ VERPLICHTINGEN
+VERPLICHTINGEN / EMBARGO
 ${data.verplichtingen || 'Geen'}
 
 ----------------------------------------
-✨ SUGGESTIE POST (CONCEPT)
+CONCEPT SOCIAL POST (KAAP STIJL)
 ----------------------------------------
 ${socialDraft}
 ----------------------------------------
 
-Gr.
+Met vriendelijke groet,
         `.trim();
 
         window.location.href = `mailto:jorik@dockwize.nl,phaedra@dockwize.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
