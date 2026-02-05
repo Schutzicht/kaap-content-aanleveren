@@ -254,8 +254,6 @@ import Layout from '../layouts/Layout.astro';
 
         // 3. Construct Narrative
         const boldHook = toBoldSans(`${hook}`);
-        const boldImpact = toBoldSans('De impact');
-        const boldJoin = toBoldSans('Meedoen?');
         
         // Context sentence
         const introSentence = theme === 'general' 
@@ -268,8 +266,13 @@ import Layout from '../layouts/Layout.astro';
             : 'Samen met onze partners maken we het verschil.';
 
         const locationText = data.waar ? `in ${data.waar}` : 'in de regio';
+        
+        // Dynamic Content or Placeholder
+        const impactText = data.waarom 
+            ? `Met deze ontwikkeling geven we direct invulling aan onze ambitie: ${data.waarom}.`
+            : '[AANVULLEN: Wat is het doel/ambitie van dit project?]';
 
-        // 4. Build Final Draft (Strict Formatting: No symbols, No hashtags, Unicode Bold Titles)
+        // 4. Build Final Draft (Strict Formatting: Single Title, Internal CTA, Placeholders)
         const socialDraft = `
 ${boldHook}
 
@@ -277,15 +280,11 @@ ${introSentence} Daarom zetten we ${locationText} een belangrijke nieuwe stap.
 
 ${partnerText} Dit initiatief bewijst dat we in Zeeland niet alleen dromen, maar ook doen.
 
-${boldImpact}
-
-Met deze ontwikkeling geven we direct invulling aan onze ambitie: ${data.waarom || 'het versterken van het ecosysteem'}. Het biedt kansen om te pionieren en onze positie als kennisregio te versterken.
-
-${boldJoin}
+${impactText} Het biedt concrete kansen om te pionieren en onze positie als kennisregio te versterken.
 
 Wil jij ook inhaken of de mogelijkheden verkennen?
 
-👉 Neem contact op met ${toBoldSans(data.contact || 'ons')} voor een gesprek.
+👉 Neem contact op met ons voor een gesprek.
 `.trim();
 
         const subject = `Content Idee: ${data.wat}`;
