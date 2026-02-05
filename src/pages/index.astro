@@ -90,11 +90,26 @@ import Layout from '../layouts/Layout.astro';
 
             <!-- Toelichting voor content -->
             <div class="space-y-2">
-                <label for="toelichting" class="block font-heading font-semibold text-kaap-gray text-lg">Toelichting voor content</label>
+                <div class="flex items-center justify-between">
+                    <label for="toelichting" class="block font-heading font-semibold text-kaap-gray text-lg">Toelichting voor content</label>
+                    <button type="button" id="micButton" class="text-kaap-gray hover:text-kaap-pink transition-colors p-2 rounded-full hover:bg-gray-100 hidden group-focus-within:block" title="Spreek toelichting in">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+                        </svg>
+                    </button>
+                </div>
                 <p class="text-sm text-kaap-text-gray mb-2">Het verhaal in het kort.</p>
-                <textarea id="toelichting" name="toelichting" rows="3"
-                    class="w-full px-5 py-4 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-kaap-pink/50 focus:ring-4 focus:ring-kaap-pink/10 outline-none transition-all duration-300 font-medium placeholder-gray-400 resize-none"
-                    placeholder="Typ hier je toelichting..."></textarea>
+                <div class="relative">
+                    <textarea id="toelichting" name="toelichting" rows="3"
+                        class="w-full px-5 py-4 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-kaap-pink/50 focus:ring-4 focus:ring-kaap-pink/10 outline-none transition-all duration-300 font-medium placeholder-gray-400 resize-none"
+                        placeholder="Typ hier je toelichting..."></textarea>
+                    <div id="micStatus" class="absolute top-2 right-2 hidden">
+                        <span class="flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <!-- Foto's/video's -->
@@ -142,6 +157,48 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
     const form = document.getElementById('submissionForm') as HTMLFormElement;
+    
+    // Voice to Text Logic
+    const micButton = document.getElementById('micButton');
+    const micStatus = document.getElementById('micStatus');
+    const toelichtingInput = document.getElementById('toelichting') as HTMLTextAreaElement;
+    
+    // Check browser support
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        micButton?.classList.remove('hidden');
+        
+        // @ts-ignore
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.lang = 'nl-NL';
+        recognition.interimResults = false;
+        
+        recognition.onstart = () => {
+            micButton?.classList.add('text-red-500', 'animate-pulse');
+            micStatus?.classList.remove('hidden');
+        };
+        
+        recognition.onend = () => {
+            micButton?.classList.remove('text-red-500', 'animate-pulse');
+            micStatus?.classList.add('hidden');
+        };
+        
+        recognition.onresult = (event: any) => {
+            const transcript = event.results[0][0].transcript;
+            if (toelichtingInput) {
+                const currentText = toelichtingInput.value;
+                toelichtingInput.value = currentText ? `${currentText} ${transcript}` : transcript;
+            }
+        };
+        
+        micButton?.addEventListener('click', () => {
+            recognition.start();
+        });
+    } else {
+        console.log('Web Speech API not supported in this browser.');
+    }
     
     form?.addEventListener('submit', (e) => {
         e.preventDefault();
