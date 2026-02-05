@@ -208,7 +208,7 @@ import Layout from '../layouts/Layout.astro';
         
         const timingVal = data.timing === 'Anders' && data.customDate ? `Datum: ${data.customDate}` : data.timing;
 
-        // Helper to convert text to sans-serif bold unicode (like the example)
+        // Helper to convert text to sans-serif bold unicode
         const toBoldSans = (text: string) => {
             const map: {[key: string]: string} = {
                 'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚', 'H': '𝗛', 'I': '𝗜', 'J': '𝗝', 'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡', 'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧', 'U': '𝗨', 'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
@@ -217,27 +217,49 @@ import Layout from '../layouts/Layout.astro';
             return text.split('').map(char => map[char] || char).join('');
         };
 
-        // Auto-generate Social Media Draft (KAAP Style - Professional Narrative)
-        const headline = `🎬 ${toBoldSans(data.wat || 'Update')}`;
-        const partners = data.partners ? `Samen met ${toBoldSans(data.partners)}` : 'onze partners';
-        const location = data.waar ? data.waar : 'Zeeland';
+        // --- KAAP BRAND LOGIC (The "Communication Specialist") ---
         
-        // Narrative Construction - WE DO NOT USE TOELICHTING HERE (It's a briefing)
+        // 1. Analyze Context & Theme
+        const inputText = `${data.wat} ${data.waarom} ${data.toelichting}`.toLowerCase();
+        let theme = 'general';
+        if (inputText.includes('water') || inputText.includes('maritiem') || inputText.includes('kust')) theme = 'water';
+        if (inputText.includes('voedsel') || inputText.includes('food') || inputText.includes('eiwit') || inputText.includes('agro')) theme = 'food';
+        if (inputText.includes('energie') || inputText.includes('stroom') || inputText.includes('netwerk') || inputText.includes('wind')) theme = 'energy';
+
+        // 2. Select Power Words (Brand Voice: Pionieren, Versnellen, Maken)
+        const powerWords = {
+            water: ['de blauwe transitie', 'deltatechnologie', 'toekomstbestendige kusten', 'waterinnovatie'],
+            food: ['voedseltransitie', 'duurzame eiwitten', 'fiesta van de toekomst', 'foodinnovatie'],
+            energy: ['energietransitie', 'nieuwe energie', 'slimme netwerken', 'groene stromen'],
+            general: ['maatschappelijke impact', 'innovatiekracht', 'nieuwe oplossingen', 'grensverleggende ideeën']
+        };
+        const selectedPowerWord = powerWords[theme as keyof typeof powerWords][Math.floor(Math.random() * powerWords[theme as keyof typeof powerWords].length)];
+
+        // 3. Construct Narrative Parts
+        const headline = `🎬 ${toBoldSans(data.wat || 'Update vanuit KAAP')}`;
+        
+        const partners = data.partners 
+            ? `Samen met ${toBoldSans(data.partners)} bundelen we onze krachten.` 
+            : 'Samenwerking is de sleutel tot succes.';
+            
+        const locationStr = data.waar ? `vanuit ${data.waar}` : 'vanuit Zeeland';
+
+        // 4. Build Professional Narrative
         const socialDraft = `
 ${headline}
 
-Innovatie vraagt om samenwerking en visie. Daarom zijn we trots om ${partners} een nieuwe stap te zetten in ${location}.
+${theme === 'general' ? 'Innovatie is geen einddoel, maar een middel voor vooruitgang.' : `De ${selectedPowerWord} vraagt om doeners en denkers.`} En dat is precies wat er ${locationStr} gebeurt.
 
-**De impact**
-Met ${toBoldSans(data.wat || 'dit project')} geven we invulling aan onze bredere ambitie: ${data.waarom || 'het versterken van het innovatieve ecosysteem'}. 
-Het biedt concrete kansen om nieuwe concepten te testen en versneld naar de markt te brengen.
+${partners} Met dit initiatief zetten we een concrete stap richting ${data.waarom ? data.waarom.toLowerCase() : 'een duurzame toekomst'}. 
 
-Dit is hét moment om krachten te bundelen en vooruit te kijken.
+**Van idee naar impact**
+In de Proeffabriek en daarbuiten geven we ruimte aan experiment en groei. Dit project bewijst dat we in Zeeland niet alleen praten over ${selectedPowerWord}, maar het ook *maken*.
 
-💡 **Meedoen?**
-Wil je inhaken op dit project of de mogelijkheden verkennen? Neem contact op met ${toBoldSans(data.contact || 'ons')} voor een gesprek over de toekomst.
+💡 **Verbinden & Versnellen**
+Zie jij ook kansen of wil je aanhaken bij deze ontwikkeling? ${data.contact ? `Neem contact op met ${toBoldSans(data.contact)}` : 'Onze deuren staan open'}. Kom langs bij KAAP en bouw mee.
 
-#KAAP #Innovatie #Zeeland`.trim();
+#KAAP #Innovatie #Zeeland #${theme.charAt(0).toUpperCase() + theme.slice(1)} ${theme !== 'general' ? '#Transitie' : '#FutureProof'}
+`.trim();
 
         const subject = `Content Idee: ${data.wat}`;
         const body = `
