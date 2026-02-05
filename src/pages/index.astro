@@ -217,21 +217,26 @@ import Layout from '../layouts/Layout.astro';
             return text.split('').map(char => map[char] || char).join('');
         };
 
-        // Auto-generate Social Media Draft (KAAP Style)
-        const headline = `🎬 ${toBoldSans(data.wat || 'Nieuws Update')}`;
+        // Auto-generate Social Media Draft (KAAP Style - Constructed Narrative)
+        const headline = `🎬 ${toBoldSans(data.wat || 'Update')}`;
+        const partners = data.partners ? `Samen met ${toBoldSans(data.partners)}` : 'Samen met onze partners';
+        const location = data.waar ? `in ${data.waar}` : 'in Zeeland';
+        const goal = data.waarom ? `Het doel is helder: ${data.waarom}.` : 'We zetten stappen in de toekomst van voedselinnovatie.';
         
+        // We construct a 'story' instead of just copying the briefing
         const socialDraft = `
 ${headline}
 
-${data.toelichting || '(Korte toelichting...)'}
+${partners} zetten we belangrijke stappen ${location}. 
+${goal}
 
-💡 ${data.waarom ? `Dit biedt kansen voor... ${data.waarom}` : 'Samen zetten we stappen in de toekomst van innovatie in Zeeland.'}
+📍 Deze ontwikkeling biedt ruimte om te testen, te ontwikkelen en samen te werken. 
 
-📅 Wil jij ook stappen zetten of samenwerken?
-Neem contact op met ${data.contact || 'ons'} of kom langs bij KAAP.
+ℹ️ DETAILS UIT BRIEFING (OM TE VERWERKEN):
+"${data.toelichting || '-'}"
 
-Met dank aan onze partners:
-${data.partners}
+💡 Wil jij ook innoveren of heb je ideeën?
+${data.contact ? `Neem contact op met ${toBoldSans(data.contact)}` : 'Neem contact met ons op'} of kom langs bij KAAP.
 
 #KAAP #Innovatie #Zeeland`.trim();
 
