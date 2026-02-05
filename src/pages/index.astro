@@ -217,26 +217,25 @@ import Layout from '../layouts/Layout.astro';
             return text.split('').map(char => map[char] || char).join('');
         };
 
-        // Auto-generate Social Media Draft (KAAP Style - Constructed Narrative)
+        // Auto-generate Social Media Draft (KAAP Style - Professional Narrative)
         const headline = `🎬 ${toBoldSans(data.wat || 'Update')}`;
-        const partners = data.partners ? `Samen met ${toBoldSans(data.partners)}` : 'Samen met onze partners';
-        const location = data.waar ? `in ${data.waar}` : 'in Zeeland';
-        const goal = data.waarom ? `Het doel is helder: ${data.waarom}.` : 'We zetten stappen in de toekomst van voedselinnovatie.';
+        const partners = data.partners ? `Samen met ${toBoldSans(data.partners)}` : 'onze partners';
+        const location = data.waar ? data.waar : 'Zeeland';
         
-        // We construct a 'story' instead of just copying the briefing
+        // Narrative Construction
         const socialDraft = `
 ${headline}
 
-${partners} zetten we belangrijke stappen ${location}. 
-${goal}
+Innovatie vraagt om samenwerking en visie. Daarom zijn we trots om ${partners} een nieuwe stap te zetten in ${location}.
 
-📍 Deze ontwikkeling biedt ruimte om te testen, te ontwikkelen en samen te werken. 
+**De ontwikkeling**
+${data.toelichting || '[Korte toelichting van de mijlpaal...]'}
 
-ℹ️ DETAILS UIT BRIEFING (OM TE VERWERKEN):
-"${data.toelichting || '-'}"
+**De impact**
+Dit initiatief sluit aan bij onze bredere ambitie: ${data.waarom || 'het versterken van het innovatieve ecosysteem'}. Het biedt concrete kansen om nieuwe concepten te testen en versneld naar de markt te brengen.
 
-💡 Wil jij ook innoveren of heb je ideeën?
-${data.contact ? `Neem contact op met ${toBoldSans(data.contact)}` : 'Neem contact met ons op'} of kom langs bij KAAP.
+💡 **Meedoen?**
+Wil je inhaken op dit project of de mogelijkheden verkennen? Neem contact op met ${toBoldSans(data.contact || 'ons')} voor een gesprek over de toekomst.
 
 #KAAP #Innovatie #Zeeland`.trim();
 
