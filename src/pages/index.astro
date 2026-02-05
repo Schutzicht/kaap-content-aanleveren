@@ -208,6 +208,18 @@ import Layout from '../layouts/Layout.astro';
         
         const timingVal = data.timing === 'Anders' && data.customDate ? `Datum: ${data.customDate}` : data.timing;
 
+        // Auto-generate Social Media Draft
+        const socialDraft = `
+🚀 ${data.wat}
+
+${data.toelichting || '(Korte toelichting hier...)'}
+
+📍 ${data.waar || 'Zeeland'}
+🤝 ${data.partners}
+
+#KAAP #Innovatie #Zeeland
+`.trim();
+
         const subject = `Content Idee: ${data.wat}`;
         const body = `
 Hoi,
@@ -240,6 +252,12 @@ ${data.contact || '-'}
 
 ⚠️ VERPLICHTINGEN
 ${data.verplichtingen || 'Geen'}
+
+----------------------------------------
+✨ SUGGESTIE POST (CONCEPT)
+----------------------------------------
+${socialDraft}
+----------------------------------------
 
 Gr.
         `.trim();
