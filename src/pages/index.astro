@@ -222,17 +222,17 @@ import Layout from '../layouts/Layout.astro';
         const partners = data.partners ? `Samen met ${toBoldSans(data.partners)}` : 'onze partners';
         const location = data.waar ? data.waar : 'Zeeland';
         
-        // Narrative Construction
+        // Narrative Construction - WE DO NOT USE TOELICHTING HERE (It's a briefing)
         const socialDraft = `
 ${headline}
 
 Innovatie vraagt om samenwerking en visie. Daarom zijn we trots om ${partners} een nieuwe stap te zetten in ${location}.
 
-**De ontwikkeling**
-${data.toelichting || '[Korte toelichting van de mijlpaal...]'}
-
 **De impact**
-Dit initiatief sluit aan bij onze bredere ambitie: ${data.waarom || 'het versterken van het innovatieve ecosysteem'}. Het biedt concrete kansen om nieuwe concepten te testen en versneld naar de markt te brengen.
+Met ${toBoldSans(data.wat || 'dit project')} geven we invulling aan onze bredere ambitie: ${data.waarom || 'het versterken van het innovatieve ecosysteem'}. 
+Het biedt concrete kansen om nieuwe concepten te testen en versneld naar de markt te brengen.
+
+Dit is hét moment om krachten te bundelen en vooruit te kijken.
 
 💡 **Meedoen?**
 Wil je inhaken op dit project of de mogelijkheden verkennen? Neem contact op met ${toBoldSans(data.contact || 'ons')} voor een gesprek over de toekomst.
