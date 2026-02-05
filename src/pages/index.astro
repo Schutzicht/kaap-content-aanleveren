@@ -217,48 +217,75 @@ import Layout from '../layouts/Layout.astro';
             return text.split('').map(char => map[char] || char).join('');
         };
 
-        // --- KAAP BRAND LOGIC (The "Communication Specialist") ---
+        // --- KAAP BRAND LOGIC (The "Communication Specialist" - Strict Edition) ---
         
-        // 1. Analyze Context & Theme
+        // 1. Theme & Emoji Logic
         const inputText = `${data.wat} ${data.waarom} ${data.toelichting}`.toLowerCase();
         let theme = 'general';
-        if (inputText.includes('water') || inputText.includes('maritiem') || inputText.includes('kust')) theme = 'water';
-        if (inputText.includes('voedsel') || inputText.includes('food') || inputText.includes('eiwit') || inputText.includes('agro')) theme = 'food';
-        if (inputText.includes('energie') || inputText.includes('stroom') || inputText.includes('netwerk') || inputText.includes('wind')) theme = 'energy';
-
-        // 2. Select Power Words (Brand Voice: Pionieren, Versnellen, Maken)
-        const powerWords = {
-            water: ['de blauwe transitie', 'deltatechnologie', 'toekomstbestendige kusten', 'waterinnovatie'],
-            food: ['voedseltransitie', 'duurzame eiwitten', 'fiesta van de toekomst', 'foodinnovatie'],
-            energy: ['energietransitie', 'nieuwe energie', 'slimme netwerken', 'groene stromen'],
-            general: ['maatschappelijke impact', 'innovatiekracht', 'nieuwe oplossingen', 'grensverleggende ideeën']
-        };
-        const selectedPowerWord = powerWords[theme as keyof typeof powerWords][Math.floor(Math.random() * powerWords[theme as keyof typeof powerWords].length)];
-
-        // 3. Construct Narrative Parts
-        const headline = `🎬 ${toBoldSans(data.wat || 'Update vanuit KAAP')}`;
+        let themeIcon = ''; 
         
-        const partners = data.partners 
-            ? `Samen met ${toBoldSans(data.partners)} bundelen we onze krachten.` 
-            : 'Samenwerking is de sleutel tot succes.';
-            
-        const locationStr = data.waar ? `vanuit ${data.waar}` : 'vanuit Zeeland';
+        if (inputText.includes('water') || inputText.includes('kust') || inputText.includes('zee')) {
+            theme = 'water';
+            themeIcon = '💧';
+        }
+        else if (inputText.includes('voedsel') || inputText.includes('food') || inputText.includes('eiwit') || inputText.includes('agro')) {
+            theme = 'food';
+            themeIcon = '🍎';
+        }
+        else if (inputText.includes('energie') || inputText.includes('stroom') || inputText.includes('netwerk') || inputText.includes('wind')) {
+            theme = 'energy';
+            themeIcon = '⚡';
+        }
 
-        // 4. Build Professional Narrative
+        // 2. Title Generator (Interpreting "Wat" as a briefing)
+        // We try to find a catchy hook based on keywords, otherwise we use a clean brand statement.
+        let hook = 'Innovatie in Zeeland'; // Fallback
+        
+        if (inputText.includes('opening') || inputText.includes('lancering') || inputText.includes('start')) {
+            hook = 'Nieuwe mijlpaal bereikt';
+        } else if (inputText.includes('samen') || inputText.includes('partner')) {
+            hook = 'De kracht van samenwerken';
+        } else if (inputText.includes('test') || inputText.includes('proef') || inputText.includes('pilot')) {
+            hook = 'Van idee naar realiteit';
+        } else if (data.wat && data.wat.split(' ').length < 5) {
+            // If the user's input is already short (max 4 words), we use it as the hook
+            hook = data.wat;
+        }
+
+        // 3. Construct Narrative
+        const boldHook = toBoldSans(`${hook}`);
+        const boldImpact = toBoldSans('De impact');
+        const boldJoin = toBoldSans('Meedoen?');
+        
+        // Context sentence
+        const introSentence = theme === 'general' 
+            ? 'Innovatie vraagt om visie en daadkracht.' 
+            : `De taak is helder: we moeten ${themeIcon} versnellen.`;
+
+        // Partner text
+        const partnerText = data.partners && data.partners.length > 2 
+            ? `Samen met ${toBoldSans(data.partners)} bundelen we onze krachten.`
+            : 'Samen met onze partners maken we het verschil.';
+
+        const locationText = data.waar ? `in ${data.waar}` : 'in de regio';
+
+        // 4. Build Final Draft (Strict Formatting: No symbols, No hashtags, Unicode Bold Titles)
         const socialDraft = `
-${headline}
+${boldHook}
 
-${theme === 'general' ? 'Innovatie is geen einddoel, maar een middel voor vooruitgang.' : `De ${selectedPowerWord} vraagt om doeners en denkers.`} En dat is precies wat er ${locationStr} gebeurt.
+${introSentence} Daarom zetten we ${locationText} een belangrijke nieuwe stap.
 
-${partners} Met dit initiatief zetten we een concrete stap richting ${data.waarom ? data.waarom.toLowerCase() : 'een duurzame toekomst'}. 
+${partnerText} Dit initiatief bewijst dat we in Zeeland niet alleen dromen, maar ook doen.
 
-**Van idee naar impact**
-In de Proeffabriek en daarbuiten geven we ruimte aan experiment en groei. Dit project bewijst dat we in Zeeland niet alleen praten over ${selectedPowerWord}, maar het ook *maken*.
+${boldImpact}
 
-💡 **Verbinden & Versnellen**
-Zie jij ook kansen of wil je aanhaken bij deze ontwikkeling? ${data.contact ? `Neem contact op met ${toBoldSans(data.contact)}` : 'Onze deuren staan open'}. Kom langs bij KAAP en bouw mee.
+Met deze ontwikkeling geven we direct invulling aan onze ambitie: ${data.waarom || 'het versterken van het ecosysteem'}. Het biedt kansen om te pionieren en onze positie als kennisregio te versterken.
 
-#KAAP #Innovatie #Zeeland #${theme.charAt(0).toUpperCase() + theme.slice(1)} ${theme !== 'general' ? '#Transitie' : '#FutureProof'}
+${boldJoin}
+
+Wil jij ook inhaken of de mogelijkheden verkennen?
+
+👉 Neem contact op met ${toBoldSans(data.contact || 'ons')} voor een gesprek.
 `.trim();
 
         const subject = `Content Idee: ${data.wat}`;
