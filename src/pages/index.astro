@@ -346,6 +346,6 @@ ${socialDraft}
     form?.addEventListener('submit', (e) => {
         e.preventDefault();
         const mailData = generateMailData();
-        window.location.href = `mailto:jorik@dockwize.nl,phaedra@dockwize.nl?subject=${encodeURIComponent(mailData.subject)}&body=${encodeURIComponent(mailData.body)}`;
+        window.location.href = `mailto:phaedra@dockwize.nl?cc=jorik@dockwize.nl&subject=${encodeURIComponent(mailData.subject)}&body=${encodeURIComponent(mailData.body)}`;
     });
 </script>
